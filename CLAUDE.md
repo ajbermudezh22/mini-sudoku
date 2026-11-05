@@ -24,6 +24,18 @@ npx live-server --port=8080     # reloads the browser on every save
 # or: python3 -m http.server 8080
 ```
 
-## Ship it
-Work on a branch, open a pull request, and let a human merge it.
-GitHub Pages deploys `main` to https://ajbermudezh22.github.io/mini-sudoku/ about a minute after the merge.
+## Visitor workflow (always follow this)
+Every visitor gets their own version. `main` stays the clean starting point.
+
+1. Start from a clean main: `git checkout main && git pull`.
+2. Create the visitor's branch: `git checkout -b visitor/<first-name>-<short-idea>`
+   (lowercase, letters, digits and hyphens only, for example `visitor/anna-tip-slider`).
+   Use the branch name you are given in the prompt if there is one.
+3. Tell the visitor your plan in 3 short bullet points, then make the change.
+4. Commit, then push: `git push -u origin HEAD`.
+5. Open a pull request into `main` titled `<First name>: <idea>`.
+6. End by telling the visitor their link, which goes live about a minute after the push:
+   `https://ajbermudezh22.github.io/mini-sudoku/v/<first-name>-<short-idea>/`
+
+Never push to `main` and never merge. A human picks the best ideas and merges them later.
+Use first names only: the repo is public.

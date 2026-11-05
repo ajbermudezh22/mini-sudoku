@@ -1,0 +1,63 @@
+# Publishes the app (main) and every visitor branch, each at its own link:
+#   main               -> https://ajbermudezh22.github.io/<repo>/
+#   visitor/anna-tips  -> https://ajbermudezh22.github.io/<repo>/v/anna-tips/
+# It also writes builds.json, the list of visitor versions for the "Built today" page.
+name: Publish app and visitor versions
+
+on:
+  push:
+    branches: [main, "visitor/**"]
+  delete:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A newer push always contains everything, so older runs can be cancelled.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Build the site from main and every visitor branch
+        run: |
+          set -euo pipefail
+          mkdir -p _site/v
+          git archive main | tar -x -C _site
+          rm -rf _site/.github
+          entries=()
+          for ref in $(git for-each-ref --sort=-committerdate --format='%(refname:short)' 'refs/remotes/origin/visitor/'); do
+            slug="${ref#origin/visitor/}"
+            # Only simple names: lowercase letters, digits and hyphens.
+            [[ "$slug" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "skip $ref"; continue; }
+            mkdir -p "_site/v/$slug"
+            git archive "$ref" | tar -x -C "_site/v/$slug"
+            rm -rf "_site/v/$slug/.github"
+            name="${slug%%-*}"
+            idea="${slug#*-}"; [ "$idea" = "$slug" ] && idea=""
+            updated="$(git log -1 --format=%cI "$ref")"
+            entries+=("{\"slug\":\"$slug\",\"name\":\"$name\",\"idea\":\"${idea//-/ }\",\"updated\":\"$updated\"}")
+          done
+          (IFS=,; echo "[${entries[*]-}]") > _site/builds.json
+          touch _site/.nojekyll
+          echo "Published main + ${#entries[@]} visitor versions"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
