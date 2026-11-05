@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mini Sudoku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Inter:wght@400;500;700;800;900&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <span class="brand">AI Studio</span>
+      <h1>Mini Sudoku</h1>
+      <p>Fill 1 to 4 in every row, column and 2×2 box. Tap a square to change it.</p>
+    </header>
+
+    <div class="board" id="board" role="grid" aria-label="Sudoku board"></div>
+
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <div class="actions">
+      <button class="btn primary" id="new-game">New puzzle</button>
+      <button class="btn" id="clear">Clear my numbers</button>
+    </div>
+
+    <footer class="app-footer">Built live at the <b>AI Studio</b> · Lift Conference 26</footer>
+  </main>
+  <script src="puzzles.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
