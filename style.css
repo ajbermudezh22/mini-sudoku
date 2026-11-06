@@ -1,10 +1,10 @@
 /* Lift AI Studio look. Change colors here, not in the components. */
 :root {
-  --bg: #F5F6FA;
+  --bg: #FFFFFF;
   --surface: #FFFFFF;
   --surface-2: #F7F8FB;
   --ink: #121212;
-  --muted: #5A5E6E;
+  --muted: #4A4D5C;
   --line: #E1E2EA;
   --blue: #0912C6;
   --blue-ink: #FFFFFF;
@@ -17,8 +17,7 @@
   --blob1: rgba(247, 150, 105, .40);
   --blob2: rgba(120, 195, 240, .42);
   --blob3: rgba(246, 226, 130, .40);
-  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
-  --brush: "Caveat Brush", "Comic Sans MS", cursive;
+  --sans: "Raleway", "Helvetica Neue", Arial, sans-serif;
   --r: 14px;
   color-scheme: light;
 }
@@ -55,9 +54,9 @@ body {
   line-height: 1.5;
   color: var(--ink);
   background:
-    radial-gradient(60% 40% at 0% 30%, var(--blob1), transparent 70%),
-    radial-gradient(60% 40% at 70% 0%, var(--blob2), transparent 70%),
-    radial-gradient(60% 40% at 30% 100%, var(--blob3), transparent 70%),
+    radial-gradient(45% 22% at 96% 2%, var(--blob2), transparent 70%),
+    radial-gradient(40% 20% at 78% 8%, var(--blob1), transparent 70%),
+    radial-gradient(45% 22% at 98% 18%, var(--blob3), transparent 70%),
     var(--bg);
   background-attachment: fixed;
 }
@@ -73,7 +72,10 @@ button, input, select { font: inherit; color: inherit; }
   gap: 14px;
 }
 .app-header { display: flex; flex-direction: column; gap: 2px; }
-.app-header .brand { font-family: var(--brush); color: var(--blue); font-size: 22px; line-height: 1; }
+.app-header .brand { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 400; line-height: 1; color: var(--ink); margin-bottom: 6px; }
+.app-header .brand img { width: 28px; height: 28px; border-radius: 50%; }
+.app-header .brand i { width: 1.5px; height: 22px; background: var(--ink); }
+@media (prefers-color-scheme: dark) { .app-header .brand img { background: #FFFFFF; } }
 .app-header h1 { margin: 0; font-size: 32px; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; }
 .app-header p { margin: 4px 0 0; color: var(--muted); }
 
@@ -86,8 +88,8 @@ button, input, select { font: inherit; color: inherit; }
 .label {
   display: block;
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .16em;
+  font-weight: 900;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 6px;
