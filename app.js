@@ -16,8 +16,23 @@ function shuffle(list) {
 }
 
 function newPuzzle() {
-  const puzzle = PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
-  const digits = shuffle([1, 2, 3, 4]);
+  selectedDay = null;
+  startPuzzle(PUZZLES[Math.floor(Math.random() * PUZZLES.length)], shuffle([1, 2, 3, 4]));
+}
+
+// Every weekday has its own fixed puzzle, so Monday is always the same.
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekdaysEl = document.getElementById('weekdays');
+let selectedDay = null;
+
+function pickDay(day) {
+  selectedDay = day;
+  const turn = day % 4;
+  const digits = [1, 2, 3, 4].map((_, k) => ((k + turn) % 4) + 1);
+  startPuzzle(PUZZLES[day % PUZZLES.length], digits);
+}
+
+function startPuzzle(puzzle, digits) {
   const swap = n => (n === 0 ? 0 : digits[n - 1]);
   givens = puzzle.givens.map(swap);
   solution = puzzle.solution.map(swap);
@@ -29,7 +44,20 @@ function isSolved() {
   return grid.every((value, i) => value === solution[i]);
 }
 
+function renderDays() {
+  weekdaysEl.innerHTML = '';
+  DAYS.forEach((name, day) => {
+    const chip = document.createElement('button');
+    chip.className = 'day';
+    chip.textContent = name;
+    chip.setAttribute('aria-pressed', day === selectedDay);
+    chip.addEventListener('click', () => pickDay(day));
+    weekdaysEl.appendChild(chip);
+  });
+}
+
 function render() {
+  renderDays();
   boardEl.innerHTML = '';
   grid.forEach((value, i) => {
     const row = Math.floor(i / 4);
@@ -68,4 +96,28 @@ document.getElementById('clear').addEventListener('click', () => {
   render();
 });
 
-newPuzzle();
+// Dark mode button. Until it is tapped, the phone setting decides.
+const themeBtn = document.getElementById('theme-toggle');
+function isDark() {
+  const chosen = document.documentElement.dataset.theme;
+  if (chosen) return chosen === 'dark';
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function showThemeIcon() {
+  themeBtn.textContent = isDark() ? '☀️' : '🌙';
+  themeBtn.setAttribute('aria-label', isDark() ? 'Switch to light mode' : 'Switch to dark mode');
+}
+themeBtn.addEventListener('click', () => {
+  const theme = isDark() ? 'light' : 'dark';
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem('theme', theme); } catch (e) {}
+  showThemeIcon();
+});
+try {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+} catch (e) {}
+showThemeIcon();
+
+// Start with today's puzzle (getDay() counts from Sunday).
+pickDay((new Date().getDay() + 6) % 7);

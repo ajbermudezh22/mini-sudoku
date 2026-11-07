@@ -35,3 +35,32 @@
   font-weight: 900;
 }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+/* Weekday chips: all 7 fit in one row, even at 360 px */
+.weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.day {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 99px;
+  padding: 8px 0;
+  min-height: 40px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.day[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
+
+/* Dark mode button, top right of the header */
+.app-header { position: relative; }
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 20px;
+  cursor: pointer;
+}

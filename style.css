@@ -22,7 +22,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0F1016;
     --surface: #1A1B24;
     --surface-2: #21222D;
@@ -42,6 +42,27 @@
     --blob3: rgba(246, 226, 130, .10);
     color-scheme: dark;
   }
+}
+/* Dark mode picked with the 🌙 button wins over the phone setting. */
+:root[data-theme="dark"] {
+  --bg: #0F1016;
+  --surface: #1A1B24;
+  --surface-2: #21222D;
+  --ink: #F2F2F5;
+  --muted: #A9ACBA;
+  --line: #2C2E3B;
+  --blue: #9EA6FF;
+  --blue-ink: #0B0E3A;
+  --blue-soft: #1E2150;
+  --ok: #72D597;
+  --ok-soft: #1B3326;
+  --bad: #FF8C82;
+  --bad-soft: #3E1F1D;
+  --highlight: #8A7420;
+  --blob1: rgba(247, 150, 105, .14);
+  --blob2: rgba(120, 195, 240, .14);
+  --blob3: rgba(246, 226, 130, .10);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -75,7 +96,8 @@ button, input, select { font: inherit; color: inherit; }
 .app-header .brand { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 400; line-height: 1; color: var(--ink); margin-bottom: 6px; }
 .app-header .brand img { width: 28px; height: 28px; border-radius: 50%; }
 .app-header .brand i { width: 1.5px; height: 22px; background: var(--ink); }
-@media (prefers-color-scheme: dark) { .app-header .brand img { background: #FFFFFF; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .app-header .brand img { background: #FFFFFF; } }
+:root[data-theme="dark"] .app-header .brand img { background: #FFFFFF; }
 .app-header h1 { margin: 0; font-size: 32px; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; }
 .app-header p { margin: 4px 0 0; color: var(--muted); }
 
